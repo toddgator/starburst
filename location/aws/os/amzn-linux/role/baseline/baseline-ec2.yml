@@ -1,0 +1,115 @@
+#cloud-config
+
+# Baseline EC2 configuration template
+#
+# This cloud-init build template is intended to be the baseline ec2 install
+# for THIG servers in the AWS cloud.
+#
+# This template has been tested/approved for the following Amazon Linux
+# releases:
+#   - 2016.09
+#   - 2017.03
+#
+
+
+# Package mgmt config
+package_update: true
+package_upgrade: false
+package_reboot_if_required: true
+yum_repos:
+  epel-thig:
+    name: Extra Packages for Enterprise Linux 6 - $basearch
+    #baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
+    mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+    failovermethod: priority
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+  epel-thig-debuginfo:
+    name: Extra Packages for Enterprise Linux 6 - $basearch - Debug
+    #baseurl: http://download.fedoraproject.org/pub/epel/6/$basearch/debug
+    mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-debug-6&arch=$basearch
+    failovermethod: priority
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+  epel-thig-srpms:
+    name: Extra Packages for Enterprise Linux 6 - $basearch - Source
+    #baseurl: http://download.fedoraproject.org/pub/epel/6/SRPMS
+    mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-source-6&arch=$basearch
+    failovermethod: priority
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+
+# Actual packages for install
+packages:
+  - git
+  - unix2dos
+  - dos2unix
+  - python-dmidecode
+  - krb5-workstation
+  - perl-DBD-SQLite
+  - sendmail
+  - sendmail-cf
+  - mutt
+  - xinetd
+  - redhat-lsb-core
+
+# Add "aws.thig.com" to the searchable domains list
+manage-resolve-conf: true
+resolve_conf:
+  searchdomains:
+    - aws.thig.com
+
+# Set timezone
+timezone: America/New_York
+
+# Set hostname
+preserve_hostname: false
+hostname: aws-test-test-01
+fqdn: aws-test-test-01.aws.thig.com
+manage_etc_hosts: true
+
+# Adding Linux admin accounts with sudo access
+users:
+  - name: todd
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: colin
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: colin
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: jason
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: jon
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+
+# Git clone the aws-thig-server-build-scripts repository from github and then
+# execute the initialization script.
+runcmd:
+  # Disable host checking for git use by root so we can git-clone non-interactively
+  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
+  - echo -e "Host github.thig.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
+  # Create /opt/thig directory for thig package downloads
+  - mkdir -p /opt/thig
+  # Git-clone the aws-thig-server-build-scripts repository
+  - cd /opt/thig && git clone git://github.com/toddgator/aws-thig-server-build-scripts.git && cd -
+  # The line that follows will be the execution for the aws-thig-server-build-scripts build chain.
+  # All configuration for 3rd party applications and such should be performed from within that code
+  # and not in cloud-init.
+  - /opt/thig/aws-thig-server-build-scripts/environment-setup.sh
+  - /opt/thig/aws-thig-server-build-scripts/initialize.sh
+
+
+final_message: "Build process completed after $UPTIME seconds"

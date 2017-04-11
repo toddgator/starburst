@@ -1,0 +1,46 @@
+#cloud-config
+
+# Packages
+package_update: false
+package_upgrade: true
+package_reboot_if_required: true
+packages:
+  - awscli
+  - httpd24
+  - httpd24-devel
+  - php56
+
+#timezone: US/Eastern
+timezone: America/New_York
+
+preserve_hostname: false
+hostname: aws-test-web-03
+fqdn: aws-dev-test-03.aws.thig.com
+manage_etc_hosts: true
+
+groups:
+  - admin: [todd, colin, jason, jon]
+
+users:
+  - name: todd
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: colin
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: colin
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: jason
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: jon
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+final_message: "Build process completed after $UPTIME seconds"
