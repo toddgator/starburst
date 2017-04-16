@@ -14,8 +14,8 @@ packages:
 timezone: America/New_York
 
 preserve_hostname: false
-hostname: aws-test-web-02
-fqdn: aws-dev-test-02.aws.thig.com
+hostname: aws-dev-web-03
+fqdn: aws-dev-web-03.aws.thig.com
 manage_etc_hosts: true
 
 groups:

@@ -1,11 +1,9 @@
 #cloud-config
 
-# Package Management
-package_update: true
-package_upgrade: false
+# Packages
+package_update: false
+package_upgrade: true
 package_reboot_if_required: true
-
-# Specific packages for Install
 packages:
   - awscli
   - httpd24
@@ -16,8 +14,8 @@ packages:
 timezone: America/New_York
 
 preserve_hostname: false
-hostname: aws-test-web-01
-fqdn: aws-dev-test-01.aws.thig.com
+hostname: aws-dev-web-02
+fqdn: aws-dev-web-02.aws.thig.com
 manage_etc_hosts: true
 
 groups:
