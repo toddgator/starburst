@@ -1,7 +1,7 @@
 #cloud-config
 
 # Package mgmt config
-package_update: true
+package_update: false
 package_upgrade: false
 package_reboot_if_required: true
 yum_repos:
@@ -56,8 +56,8 @@ timezone: America/New_York
 
 # Set hostname
 preserve_hostname: false
-hostname: aws-www-prod-01
-fqdn: aws-www-prod-01.aws.thig.com
+hostname: aws-www-dmz-01
+fqdn: aws-www-dmz-01.aws.thig.com
 manage_etc_hosts: true
 
 # Adding Linux admin accounts with sudo access
