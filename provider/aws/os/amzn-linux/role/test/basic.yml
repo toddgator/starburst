@@ -18,9 +18,7 @@ package_upgrade: true
 
 packages:
   - awscli
-  - httpd24
-  - httpd24-devel
-  - php56
+  - git
 
 groups:
   - admin: [todd, colin, jason, jon]

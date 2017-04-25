@@ -1,26 +1,66 @@
 #cloud-config
 
-# Packages
-package_update: false
-package_upgrade: true
+# Package mgmt config
+package_update: true
+package_upgrade: false
 package_reboot_if_required: true
-packages:
-  - awscli
-  - httpd24
-  - httpd24-devel
-  - php56
+yum_repos:
+  epel-thig:
+    name: Extra Packages for Enterprise Linux 6 - $basearch
+    #baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
+    mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+    failovermethod: priority
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+  epel-thig-debuginfo:
+    name: Extra Packages for Enterprise Linux 6 - $basearch - Debug
+    #baseurl: http://download.fedoraproject.org/pub/epel/6/$basearch/debug
+    mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-debug-6&arch=$basearch
+    failovermethod: priority
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+  epel-thig-srpms:
+    name: Extra Packages for Enterprise Linux 6 - $basearch - Source
+    #baseurl: http://download.fedoraproject.org/pub/epel/6/SRPMS
+    mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-source-6&arch=$basearch
+    failovermethod: priority
+    enabled: 1
+    gpgcheck: 1
+    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
 
-#timezone: US/Eastern
+# Actual packages for install
+packages:
+  - git
+  - nfs-utils
+  - unix2dos
+  - dos2unix
+  - python-dmidecode
+  - krb5-workstation
+  - perl-DBD-SQLite
+  - sendmail
+  - sendmail-cf
+  - mutt
+  - xinetd
+  - redhat-lsb-core
+
+# Add "aws.thig.com" to the searchable domains list
+manage-resolve-conf: true
+resolve_conf:
+  searchdomains:
+    - aws.thig.com
+
+# Set timezone
 timezone: America/New_York
 
+# Set hostname
 preserve_hostname: false
-hostname: aws-dev-web-02
-fqdn: aws-dev-web-02.aws.thig.com
+hostname: aws-www-prod-01
+fqdn: aws-www-prod-01.aws.thig.com
 manage_etc_hosts: true
 
-groups:
-  - admin: [todd, colin, jason, jon]
-
+# Adding Linux admin accounts with sudo access
 users:
   - name: todd
     ssh_authorized_keys:
@@ -43,4 +83,8 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
     sudo: ALL=(ALL) NOPASSWD:ALL
 
-final_message: "Build process completed after $UPTIME seconds"
+runcmd:
+  - mkdir -p /mnt/efs/fs-c0208089/wp-thigdotcom-mysql
+  - chown apache:apache /mnt/efs/fs-c0208089/wp-thigdotcom-mysql/
+  - echo "fs-c0208089.efs.us-east-1.amazonaws.com:/wp-thigdotcom-mysql /mnt/efs/fs-c0208089/wp-thigdotcom-mysql nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0" >> /etc/fstab
+  - mount -a -t nfs4
