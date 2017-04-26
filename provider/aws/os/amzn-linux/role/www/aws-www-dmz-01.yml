@@ -1,11 +1,11 @@
 #cloud-config
 
 # Package mgmt config
-package_update: false
+package_update: true
 package_upgrade: false
 package_reboot_if_required: true
 
-# Actual packages for install
+# Extra packages for install
 packages:
   - git
   - nfs-utils
@@ -35,7 +35,7 @@ hostname: aws-www-dmz-01
 fqdn: aws-www-dmz-01.aws.thig.com
 manage_etc_hosts: true
 
-# Adding Linux admin accounts with sudo access
+# Adding Linux admin accounts with sudo access (no password required)
 users:
   - name: todd
     ssh_authorized_keys:
@@ -60,9 +60,11 @@ users:
 
 # Custom commands for THIG configuration
 runcmd:
+  - X=0; while [ "$X" -lt 5 ]; do yum -t -y --exclude=kernel --exclude=nvidia* --exclude=cudatoolkit --security --sec-severity=critical --sec-severity=important upgrade; if [ "$?" -eq 0 ]; then break; fi; sleep 5; let X++; done
+  - yum update -y
   - yum-config-manager --enable epel
+  - yum install git nfs-utils unix2dos dos2unix python-dmidecode krb5-workstation perl-DBD-SQLite sendmail sendmail-cf mutt xinetd redhat-lsb-core-y
   - mkdir -p /mnt/efs/fs-c0208089/wp-thigdotcom-mysql
   - chown apache:apache /mnt/efs/fs-c0208089/wp-thigdotcom-mysql/
   - echo "fs-c0208089.efs.us-east-1.amazonaws.com:/wp-thigdotcom-mysql /mnt/efs/fs-c0208089/wp-thigdotcom-mysql nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0" >> /etc/fstab
   - mount -a -t nfs4
-  - yum install git nfs-utils unix2dos dos2unix python-dmidecode krb5-workstation perl-DBD-SQLite sendmail sendmail-cf mutt xinetd redhat-lsb-core-y
