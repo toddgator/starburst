@@ -4,15 +4,6 @@
 package_update: false
 package_upgrade: false
 package_reboot_if_required: true
-yum_repos:
-  epel:
-    name: Extra Packages for Enterprise Linux 6 - $basearch
-    #baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
-    mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
-    failovermethod: priority
-    enabled: 1
-    gpgcheck: 1
-    gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
 
 # Actual packages for install
 packages:
@@ -69,6 +60,7 @@ users:
 
 # Custom commands for THIG configuration
 runcmd:
+  - yum-config-manager --enable epel
   - mkdir -p /mnt/efs/fs-c0208089/wp-thigdotcom-mysql
   - chown apache:apache /mnt/efs/fs-c0208089/wp-thigdotcom-mysql/
   - echo "fs-c0208089.efs.us-east-1.amazonaws.com:/wp-thigdotcom-mysql /mnt/efs/fs-c0208089/wp-thigdotcom-mysql nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0" >> /etc/fstab
