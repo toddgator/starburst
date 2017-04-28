@@ -26,11 +26,15 @@ users:
     sudo: ALL=(ALL) NOPASSWD:ALL
 
 runcmd:
-  - X=0; while [ "$X" -lt 5 ]; do yum -t -y --exclude=kernel --exclude=nvidia* --exclude=cudatoolkit --security --sec-severity=critical --sec-severity=important upgrade; if [ "$?" -eq 0 ]; then break; fi; sleep 5; let X++; done
-  - yum update -y
+  - echo "$(date) - Waiting 30 seconds before beginning..."
+  - sleep 30
+  - echo "$(date) - ...done"
+  - echo "$(date) - Beginning deployment tasks"
   - yum-config-manager --enable epel
-  - yum install git nfs-utils unix2dos dos2unix python-dmidecode krb5-workstation perl-DBD-SQLite sendmail sendmail-cf mutt xinetd redhat-lsb-core-y
+  - yum update -y
+  - yum install git nfs-utils unix2dos dos2unix python-dmidecode krb5-workstation perl-DBD-SQLite sendmail sendmail-cf mutt xinetd redhat-lsb-core -y
   - mkdir -p /mnt/efs/fs-c0208089/wp-thigdotcom-mysql
   - chown apache:apache /mnt/efs/fs-c0208089/wp-thigdotcom-mysql/
   - echo "fs-c0208089.efs.us-east-1.amazonaws.com:/wp-thigdotcom-mysql /mnt/efs/fs-c0208089/wp-thigdotcom-mysql nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0" >> /etc/fstab
   - mount -a -t nfs4
+  - echo "$(date) - Deployment Complete"

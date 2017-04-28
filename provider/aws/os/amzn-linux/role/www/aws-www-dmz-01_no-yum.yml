@@ -1,0 +1,50 @@
+#cloud-config
+
+# Add "aws.thig.com" to the searchable domains list
+manage-resolve-conf: true
+resolve_conf:
+  searchdomains:
+    - aws.thig.com
+
+# Set timezone
+timezone: America/New_York
+
+# Set hostname
+preserve_hostname: false
+hostname: aws-www-dmz-01
+fqdn: aws-www-dmz-01.aws.thig.com
+manage_etc_hosts: true
+
+# Adding Linux admin accounts with sudo access (no password required)
+users:
+  - name: todd
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: colin
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: colin
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: jason
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+  - name: jon
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2JEP98uJeE4aXqnFtwQVOdEZkOXsLyNejjw53X9bnlpvN3/ubY9kmpfetT2URi8gkc2ydmrJTu9YzIxRNrmDbfJhXq9C4WNM8ASLAh50vk/Z0HJCn7CaQQjflGyoLBa5fOlda4ypKsoQUACMVseNZNwADPsDTE1Ax5CL/JnA6OB4mmUXLnNWB1FQfo37YCGKMPyrfshsnc2xA+KZ5bj7kwEhx1BXwKKRGr5hCAqoIMiVerB5LHlStifhkWEfWZZf7NeqlbEhRxhWaSnuNKg7lZjcDlGzTgBcBUkAGxP4kOEN7EtcPVDgFTiuVMTyrUWxYmG1pRRjlW30Nx9MqDGl3 thiglinux
+    sudo: ALL=(ALL) NOPASSWD:ALL
+
+# Custom commands for THIG configuration
+runcmd:
+# Create our mountpoint dir for EFS and then add add the mountpoint into
+# /etc/fstab in order to persist it across reboot.
+  - mkdir -p /mnt/efs/fs-c0208089/wp-thigdotcom-mysql
+  - chown apache:apache /mnt/efs/fs-c0208089/wp-thigdotcom-mysql/
+  - echo "fs-c0208089.efs.us-east-1.amazonaws.com:/wp-thigdotcom-mysql /mnt/efs/fs-c0208089/wp-thigdotcom-mysql nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0" >> /etc/fstab
+  - mount -a -t nfs4
+
+final_message: "THIG build process completed after $UPTIME seconds...enjoy!"
