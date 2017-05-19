@@ -42,9 +42,9 @@ users:
 runcmd:
 # Create our mountpoint dir for EFS and then add add the mountpoint into
 # /etc/fstab in order to persist it across reboot.
-  - mkdir -p /mnt/efs/fs-2de45f64/prod
-  - chown apache:apache /mnt/efs/fs-2de45f64/prod/
-  - echo "fs-2de45f64.efs.us-east-1.amazonaws.com:/prod /mnt/efs/fs-2de45f64/prod nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0" >> /etc/fstab
+  - mkdir -pv /mnt/efs/fs-bd58e3f4/prod
+  - chown -Rv apache:apache /mnt/efs/fs-2de45f64/prod/
+  - echo "fs-bd58e3f4.efs.us-east-1.amazonaws.com:/prod /mnt/efs/fs-2de45f64/prod nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0" >> /etc/fstab
   - mount -a -t nfs4
 
 final_message: "THIG build process completed after $UPTIME seconds...enjoy!"
