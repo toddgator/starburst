@@ -1,5 +1,34 @@
 #cloud-config
 
+# Package mgmt config
+package_update: true
+package_upgrade: false
+package_reboot_if_required: true
+
+# Extra packages for install
+packages:
+  - git
+  - nfs-utils
+  - unix2dos
+  - dos2unix
+  - python-dmidecode
+  - krb5-workstation
+  - perl-DBD-SQLite
+  - sendmail
+  - sendmail-cf
+  - mutt
+  - xinetd
+  - redhat-lsb-core
+  - httpd24
+  - mod24_security
+  - php56
+  - php56-gd
+  - php56-xml
+  - mysql
+  - php56-mysqlnd
+  - openssl
+  - mod24_ssl
+
 # Add "aws.thig.com" to the searchable domains list
 manage-resolve-conf: true
 resolve_conf:

@@ -1,5 +1,34 @@
 #cloud-config
 
+# Package mgmt config
+package_update: true
+package_upgrade: false
+package_reboot_if_required: true
+
+# Extra packages for install
+packages:
+  - git
+  - nfs-utils
+  - unix2dos
+  - dos2unix
+  - python-dmidecode
+  - krb5-workstation
+  - perl-DBD-SQLite
+  - sendmail
+  - sendmail-cf
+  - mutt
+  - xinetd
+  - redhat-lsb-core
+  - httpd24
+  - mod24_security
+  - php56
+  - php56-gd
+  - php56-xml
+  - mysql
+  - php56-mysqlnd
+  - openssl
+  - mod24_ssl
+
 # Add "aws.thig.com" to the searchable domains list
 manage-resolve-conf: true
 resolve_conf:
@@ -11,8 +40,8 @@ timezone: America/New_York
 
 # Set hostname
 preserve_hostname: false
-hostname: aws-www-dmz-00
-fqdn: aws-www-dmz-00.aws.thig.com
+hostname: aws-www-dmz-01
+fqdn: aws-www-dmz-01.aws.thig.com
 manage_etc_hosts: true
 
 # Adding Linux admin accounts with sudo access (no password required)
@@ -40,11 +69,11 @@ users:
 
 # Custom commands for THIG configuration
 runcmd:
-# Create our mountpoint dir for EFS and then add add the mountpoint into
-# /etc/fstab in order to persist it across reboot.
-  - mkdir -pv /mnt/efs/fs-bd58e3f4/wpress-www-prod
-  - chown -v apache:apache /mnt/efs/fs-bd58e3f4/wpress-www-prod/
-  - echo "fs-bd58e3f4.efs.us-east-1.amazonaws.com:/wpress-www-prod /mnt/efs/fs-bd58e3f4/wpress-www-prod nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0" >> /etc/fstab
+  - X=0; while [ "$X" -lt 5 ]; do yum -t -y --exclude=kernel --exclude=nvidia* --exclude=cudatoolkit --security --sec-severity=critical --sec-severity=important upgrade; if [ "$?" -eq 0 ]; then break; fi; sleep 5; let X++; done
+  - yum update -y
+  - yum-config-manager --enable epel
+  - yum install git nfs-utils unix2dos dos2unix python-dmidecode krb5-workstation perl-DBD-SQLite sendmail sendmail-cf mutt xinetd redhat-lsb-core-y
+  - mkdir -p /mnt/efs/fs-c0208089/wp-thigdotcom-mysql
+  - chown apache:apache /mnt/efs/fs-c0208089/wp-thigdotcom-mysql/
+  - echo "fs-c0208089.efs.us-east-1.amazonaws.com:/wp-thigdotcom-mysql /mnt/efs/fs-c0208089/wp-thigdotcom-mysql nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2 0 0" >> /etc/fstab
   - mount -a -t nfs4
-
-final_message: "THIG build process completed after $UPTIME seconds...enjoy!"
